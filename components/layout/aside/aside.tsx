@@ -7,7 +7,14 @@ const asideRoutes = [
     path: "dashboard",
     element: <DashboardAside />,
   },
-
+  {
+    path: "dashboard/test",
+    element: null,
+  },
+  {
+    path: "/dashboard/*",
+    element: <DashboardAside />,
+  },
   {
     path: pathMenu.home.path,
     element: null,

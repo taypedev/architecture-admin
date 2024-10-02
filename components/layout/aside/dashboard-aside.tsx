@@ -1,18 +1,16 @@
 "use client";
 
-import { logout } from "@/actions/auth/logout.action";
+import { asideMenuData } from "@/common/data/layout/menu/aside-menu.data";
 import { Button } from "@/components/ui/button";
 import { useSidebarMobile } from "@/hooks/use-sidebar-mobile";
 import { cn } from "@/lib/utils";
-import {
-  BarChart,
-  ChevronDown,
-  Home,
-  LayoutDashboard,
-  LogOut,
-  Settings,
-  Users,
-} from "lucide-react";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { ChevronDown } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { CollapsibleMenuItem } from "./collapsible-menu";
+import LogoutAsideButton from "./logout-aside-button";
+import { MenuItemAside } from "./menu-item-aside";
 
 const DashboardAside = () => {
   const { isMinimized, toggle } = useSidebarMobile();
@@ -24,60 +22,71 @@ const DashboardAside = () => {
   return (
     <aside
       className={cn(
-        `hidden h-screen flex-none border-r bg-background transition-all duration-300 ease-in-out md:block sticky inset-x-0 top-0 w-full z-20 `,
+        `hidden h-screen flex-none border-r bg-background transition-all duration-300 ease-in-out lg:block sticky inset-x-0 top-0 w-full z-20 `,
         !isMinimized ? "w-72" : "w-[72px]"
       )}
     >
-      <div className="flex flex-col h-full">
-        <div className="flex items-center justify-between p-4">
-          <h2
-            className={`text-xl font-bold ${!isMinimized ? "block" : "hidden"}`}
+      <section className="flex flex-col h-full">
+        {/* header aside */}
+        <article className="flex items-center justify-between w-full p-2">
+          {/* LOGO or TITLE */}
+          <section
+            className={`w-full flex items-center justify-center text-xl font-bold ${
+              !isMinimized ? "block" : "hidden"
+            }`}
           >
-            Admin Panel
-          </h2>
-          <Button variant="ghost" size="icon" onClick={handleToggle}>
+            <Link href={"/dashboard"}>
+              <Image
+                src={"/logos/logo.svg"}
+                alt="logo"
+                width={100}
+                height={50}
+              />
+            </Link>
+          </section>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleToggle}
+            className={`${isMinimized ? "w-full" : ""}`}
+          >
             <ChevronDown
               className={`h-6 w-6 transition-transform ${
                 !isMinimized ? "rotate-0" : "rotate-180"
               }`}
             />
           </Button>
+        </article>
+
+        {/* body-aside */}
+        <ScrollArea className="flex-1 gap-2  overflow-x-hidden p-2 flex flex-col">
+          {asideMenuData.map((item, index) =>
+            item?.items ? (
+              <CollapsibleMenuItem
+                key={index}
+                icon={item.icon}
+                isMinimized={isMinimized}
+                label={item.label}
+                items={item.items}
+              />
+            ) : (
+              <MenuItemAside
+                key={index}
+                icon={item.icon}
+                isMinimized={isMinimized}
+                label={item.label}
+                url={item.url}
+              />
+            )
+          )}
+        </ScrollArea>
+
+        {/* Footer */}
+        <div className="p-2">
+          <LogoutAsideButton isMinimized={isMinimized} />
         </div>
-        <nav className="flex-1 space-y-2 p-2">
-          <Button variant="ghost" className="w-full justify-start">
-            <Home className="mr-2 h-4 w-4" />
-            {!isMinimized && <span>Home</span>}
-          </Button>
-          <Button variant="ghost" className="w-full justify-start">
-            <LayoutDashboard className="mr-2 h-4 w-4" />
-            {!isMinimized && <span>Dashboard</span>}
-          </Button>
-          <Button variant="ghost" className="w-full justify-start">
-            <Users className="mr-2 h-4 w-4" />
-            {!isMinimized && <span>Users</span>}
-          </Button>
-          <Button variant="ghost" className="w-full justify-start">
-            <BarChart className="mr-2 h-4 w-4" />
-            {!isMinimized && <span>Analytics</span>}
-          </Button>
-          <Button variant="ghost" className="w-full justify-start">
-            <Settings className="mr-2 h-4 w-4" />
-            {!isMinimized && <span>Settings</span>}
-          </Button>
-        </nav>
-        <div className="p-4">
-          <Button
-            variant="ghost"
-            className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-100 dark:hover:bg-red-900"
-            onClick={() => {
-              logout();
-            }}
-          >
-            <LogOut className="mr-2 h-4 w-4" />
-            {!isMinimized && <span>Logout</span>}
-          </Button>
-        </div>
-      </div>
+      </section>
     </aside>
   );
 };

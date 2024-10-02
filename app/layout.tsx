@@ -1,10 +1,10 @@
+import Aside from "@/components/layout/aside/aside";
 import Header from "@/components/layout/header/header";
 import { ThemeProvider } from "@/provider/theme-provider";
 import type { Metadata } from "next";
+import { Space_Grotesk } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
-import Aside from "@/components/layout/aside/aside";
-import { Space_Grotesk } from "next/font/google";
 const roboto = localFont({
   variable: "--font-roboto",
   src: [
@@ -138,9 +138,9 @@ export default function RootLayout({
       <body
         className={`${roboto.variable} ${lato.variable} ${grotesk.variable} flex relative overflow-hidden font-lato`}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <Aside />
-          <main className="w-full flex-1 overflow-hidden h-screen overflow-y-auto relative">
+          <main className="w-full flex-1 overflow-hidden h-screen overflow-y-auto relative bg-secondary">
             <Header />
             {children}
           </main>
