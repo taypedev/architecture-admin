@@ -1,16 +1,16 @@
-import { pathMenu, pathToRoute } from "@/herlpers/route.helper";
-import { headers } from "next/headers";
-import HomeHeader from "./home-header";
-import DashboardHeader from "./dashboard-header";
+// "use client";
 
-const headerRoutes = [
+import { TAuthRoles } from "@/common/types/auth/auth.types";
+import { pathMenu, pathToRoute } from "@/herlpers/route.helper";
+import { User } from "next-auth";
+import { headers } from "next/headers";
+import DashboardHeader from "./dashboard-header";
+import HomeHeader from "./home-header";
+
+const adminRoutes = [
   {
     path: "dashboard",
     element: <DashboardHeader />,
-  },
-  {
-    path: "dashboard/test",
-    element: null,
   },
   {
     path: "/dashboard/*",
@@ -26,7 +26,41 @@ const headerRoutes = [
   },
 ];
 
-export default function Header() {
+const clientRoutes = [
+  {
+    path: "dashboard",
+    element: <DashboardHeader />,
+  },
+  {
+    path: "dashboard/test",
+    element: null,
+  },
+  {
+    path: "/dashboard/*",
+    element: null,
+  },
+];
+
+export default function Header({ user }: { user: User | null }) {
+  let headerRoutes: {
+    path: string;
+    element: React.ReactNode | null;
+  }[] = [
+    {
+      path: "/*",
+      element: null,
+    },
+  ];
+
+  if (user?.role === TAuthRoles.admin) {
+    headerRoutes = adminRoutes;
+  }
+  if (user?.role === TAuthRoles.user) {
+    headerRoutes = clientRoutes;
+  }
+
+  // const [first, setfirst] = useState("second");
+
   const headersList = headers();
   const pathname = headersList.get("x-url") || "";
 

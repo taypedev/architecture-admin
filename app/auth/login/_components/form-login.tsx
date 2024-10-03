@@ -20,6 +20,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useSearchParams } from "next/navigation";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export const loginSchemaForm = z.object({
   email: z
@@ -30,6 +31,7 @@ export const loginSchemaForm = z.object({
     .string()
     .min(8, { message: "La contraseña debe tener al menos 8 caracteres" })
     .default(LoginDemo.password),
+  isAdmin: z.boolean().default(false),
 });
 
 type IFormLoginProps = object;
@@ -59,6 +61,7 @@ const FormLogin: React.FC<IFormLoginProps> = () => {
       const res = await loginAction({
         email: values.email,
         password: values.password,
+        isAdmin: values.isAdmin,
         callbackUrl: callbackUrl ?? "",
       });
 
@@ -116,6 +119,24 @@ const FormLogin: React.FC<IFormLoginProps> = () => {
                 />
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="isAdmin"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>Seleccione en caso sea el admin</FormLabel>
+              </div>
             </FormItem>
           )}
         />

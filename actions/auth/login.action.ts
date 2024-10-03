@@ -7,18 +7,21 @@ import { isRedirectError } from "next/dist/client/components/redirect";
 type TLoginActionProps = {
   email: string;
   password: string;
+  isAdmin: boolean;
   callbackUrl: string;
 };
 
 export const loginAction = async ({
   email,
   password,
+  isAdmin,
   callbackUrl,
 }: TLoginActionProps) => {
   try {
     await signIn("credentials", {
       email,
       password,
+      isAdmin,
       redirect: true,
       redirectTo: callbackUrl || "/dashboard",
     });

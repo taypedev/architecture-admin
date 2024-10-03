@@ -23,6 +23,7 @@ export default auth(function middleware(req) {
 
   if (isApiAuthRoute) {
     return undefined;
+    // return NextResponse.next();
   }
 
   if (isAuthRoute) {
