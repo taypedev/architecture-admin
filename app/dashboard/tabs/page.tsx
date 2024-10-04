@@ -1,4 +1,4 @@
-import TabsContentPage from "./_components/tabs-content-page";
+import TabsContentPage from "../../../components/modules/dashboard/tabs/tabs-content-page";
 
 export default function TabsPage() {
   return (

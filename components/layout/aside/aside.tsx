@@ -1,8 +1,10 @@
-import { pathMenu, pathToRoute } from "@/herlpers/route.helper";
-import { headers } from "next/headers";
-import DashboardAside from "./dashboard-aside";
-import { User } from "next-auth";
+"use client";
+
 import { TAuthRoles } from "@/common/types/auth/auth.types";
+import { pathMenu, pathToRoute } from "@/herlpers/route.helper";
+import { User } from "next-auth";
+import { usePathname } from "next/navigation";
+import DashboardAside from "./dashboard-aside";
 
 interface IAsideProps {
   user: User | null;
@@ -40,6 +42,10 @@ const clientRoutes = [
     path: "/dashboard/*",
     element: null,
   },
+  {
+    path: "/*",
+    element: null,
+  },
 ];
 
 export default function Aside({ user }: IAsideProps) {
@@ -61,8 +67,9 @@ export default function Aside({ user }: IAsideProps) {
     asideRoutes = clientRoutes;
   }
 
-  const headersList = headers();
-  const pathname = headersList.get("x-url") || "";
+  // const headersList = headers();
+  // const pathname = headersList.get("x-url") || "";
+  const pathname = usePathname();
 
   const PAGE = asideRoutes.find((key) => {
     return key.path.endsWith("/*")

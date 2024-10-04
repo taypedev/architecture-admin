@@ -1,7 +1,7 @@
-import Image from "next/image";
 import servicesData from "@/common/data/layout/services.json";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import Link from "next/link";
 
 export const HomeLanding = () => {

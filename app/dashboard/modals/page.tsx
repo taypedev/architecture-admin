@@ -1,5 +1,5 @@
 import React from "react";
-import ModalsContentPage from "./_components/modals-content-page";
+import ModalsContentPage from "../../../components/modules/dashboard/modals/modals-content-page";
 
 const ModalPage = () => {
   return (

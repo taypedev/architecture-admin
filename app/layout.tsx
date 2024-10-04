@@ -3,126 +3,9 @@ import Aside from "@/components/layout/aside/aside";
 import Header from "@/components/layout/header/header";
 import { ThemeProvider } from "@/provider/theme-provider";
 import type { Metadata } from "next";
-import { Space_Grotesk } from "next/font/google";
-import localFont from "next/font/local";
 import "./globals.css";
-const roboto = localFont({
-  variable: "--font-roboto",
-  src: [
-    {
-      path: "./fonts/Roboto/Roboto-Thin.ttf",
-      weight: "100",
-      style: "normal",
-    },
-    {
-      path: "./fonts/Roboto/Roboto-ThinItalic.ttf",
-      weight: "100",
-      style: "italic",
-    },
-    {
-      path: "./fonts/Roboto/Roboto-Light.ttf",
-      weight: "300",
-      style: "normal",
-    },
-    {
-      path: "./fonts/Roboto/Roboto-LightItalic.ttf",
-      weight: "300",
-      style: "italic",
-    },
-    {
-      path: "./fonts/Roboto/Roboto-Regular.ttf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./fonts/Roboto/Roboto-Medium.ttf",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "./fonts/Roboto/Roboto-MediumItalic.ttf",
-      weight: "500",
-      style: "italic",
-    },
-    {
-      path: "./fonts/Roboto/Roboto-Bold.ttf",
-      weight: "700",
-      style: "normal",
-    },
-    {
-      path: "./fonts/Roboto/Roboto-BoldItalic.ttf",
-      weight: "700",
-      style: "italic",
-    },
-    {
-      path: "./fonts/Roboto/Roboto-Black.ttf",
-      weight: "900",
-      style: "normal",
-    },
-    {
-      path: "./fonts/Roboto/Roboto-BlackItalic.ttf",
-      weight: "900",
-      style: "italic",
-    },
-  ],
-});
-
-const grotesk = Space_Grotesk({
-  variable: "--font-grotesk",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-});
-
-const lato = localFont({
-  variable: "--font-lato",
-  src: [
-    {
-      path: "./fonts/Lato/Lato-Thin.ttf",
-      weight: "100",
-      style: "normal",
-    },
-    {
-      path: "./fonts/Lato/Lato-ThinItalic.ttf",
-      weight: "100",
-      style: "italic",
-    },
-    {
-      path: "./fonts/Lato/Lato-Light.ttf",
-      weight: "300",
-      style: "normal",
-    },
-    {
-      path: "./fonts/Lato/Lato-LightItalic.ttf",
-      weight: "300",
-      style: "italic",
-    },
-    {
-      path: "./fonts/Lato/Lato-Regular.ttf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./fonts/Lato/Lato-Bold.ttf",
-      weight: "700",
-      style: "normal",
-    },
-    {
-      path: "./fonts/Lato/Lato-BoldItalic.ttf",
-      weight: "700",
-      style: "italic",
-    },
-    {
-      path: "./fonts/Lato/Lato-Black.ttf",
-      weight: "900",
-      style: "normal",
-    },
-    {
-      path: "./fonts/Lato/Lato-BlackItalic.ttf",
-      weight: "900",
-      style: "italic",
-    },
-  ],
-});
+import { grotesk, lato, roboto } from "./fonts/fonts";
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: "Paku architecture",
@@ -141,11 +24,13 @@ export default async function RootLayout({
         className={`${roboto.variable} ${lato.variable} ${grotesk.variable} flex relative overflow-hidden font-lato`}
       >
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <Aside user={user} />
-          <main className="w-full flex-1 overflow-hidden h-screen overflow-y-auto relative bg-secondary">
-            <Header user={user} />
-            {children}
-          </main>
+          <SessionProvider>
+            <Aside user={user} />
+            <main className="w-full flex-1 overflow-hidden h-screen overflow-y-auto relative bg-secondary">
+              <Header user={user} />
+              {children}
+            </main>
+          </SessionProvider>
         </ThemeProvider>
       </body>
     </html>

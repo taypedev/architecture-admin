@@ -1,13 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { JWT } from "next-auth/jwt";
+import { INextAuthUser } from "./common/types/auth/auth.types";
 
 declare module "next-auth" {
   /**
    * The shape of the user object returned in the OAuth providers' `profile` callback,
    * or the second parameter of the `session` callback, when using a database.
    */
-  interface User {
-    role: string;
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  interface User extends INextAuthUser {
+    // new properties
   }
   /**
    * The shape of the account object returned in the OAuth providers' `account` callback,
@@ -24,8 +26,7 @@ declare module "next-auth" {
 }
 
 declare module "next-auth/jwt" {
-  interface JWT {
-    role: string;
+  interface JWT extends INextAuthUser {
     idToken?: string;
   }
 }

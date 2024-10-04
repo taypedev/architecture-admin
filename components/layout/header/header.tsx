@@ -1,11 +1,11 @@
-// "use client";
+"use client";
 
 import { TAuthRoles } from "@/common/types/auth/auth.types";
-import { pathMenu, pathToRoute } from "@/herlpers/route.helper";
+import { pathToRoute } from "@/herlpers/route.helper";
 import { User } from "next-auth";
-import { headers } from "next/headers";
+// import { headers } from "next/headers";
+import { usePathname } from "next/navigation";
 import DashboardHeader from "./dashboard-header";
-import HomeHeader from "./home-header";
 
 const adminRoutes = [
   {
@@ -15,10 +15,6 @@ const adminRoutes = [
   {
     path: "/dashboard/*",
     element: <DashboardHeader />,
-  },
-  {
-    path: pathMenu.home.path,
-    element: <HomeHeader />,
   },
   {
     path: "/*",
@@ -32,11 +28,11 @@ const clientRoutes = [
     element: <DashboardHeader />,
   },
   {
-    path: "dashboard/test",
+    path: "/dashboard/*",
     element: null,
   },
   {
-    path: "/dashboard/*",
+    path: "/*",
     element: null,
   },
 ];
@@ -59,10 +55,9 @@ export default function Header({ user }: { user: User | null }) {
     headerRoutes = clientRoutes;
   }
 
-  // const [first, setfirst] = useState("second");
-
-  const headersList = headers();
-  const pathname = headersList.get("x-url") || "";
+  // const headersList = headers();
+  // const pathname = headersList.get("x-url") || "";
+  const pathname = usePathname();
 
   const PAGE = headerRoutes.find((route) => {
     if (route.path.endsWith("/*")) {
